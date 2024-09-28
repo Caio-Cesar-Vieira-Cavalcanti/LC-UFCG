@@ -1,5 +1,8 @@
 module projeto
-// ESQUELETO
+
+/*
+PRIMEIRA VERSÃO
+*/
 
 // Definindo os horários possíveis
 abstract sig Horario {}
@@ -91,10 +94,7 @@ assert VerificaEsperaDisciplina {
 }
 
 // Comandos para checar os asserts
-/*
+
 check VerificaLimiteHorarios for 5 but exactly 3 Reserva, exactly 5 Professor, exactly 5 Dia, exactly 4 Horario, exactly 2 Lab
 check VerificaConflitosReservas for 5 but exactly 3 Reserva, exactly 5 Professor, exactly 5 Dia, exactly 4 Horario, exactly 2 Lab
 check VerificaEsperaDisciplina for 5 but exactly 3 Reserva, exactly 5 Professor, exactly 5 Dia, exactly 4 Horario, exactly 2 Lab
-*/
-
-run {}
