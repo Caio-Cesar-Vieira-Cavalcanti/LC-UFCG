@@ -30,12 +30,46 @@ sig Disciplina {
 }
 
 // Reserva de aulas
-sig Aula {
+sig Aula extends Atividade {
     professor: one Professor,
     dias: set Dia,
-    horarios: set Horario,
     disciplinas: set Disciplina
 }
+
+abstract sig Atividade {
+	horarios: set Horario,
+}
+
+sig AtividadeExtra extends Atividade {
+	pessoa: one Pessoa,
+	dias: one Dia,
+	lab: one Lab
+}
+
+// Reserva criada
+sig Reserva {
+	atividades: one Atividade
+}
+
+// Representaço da Lista de Espera
+sig ListaEspera {
+	reservas: set Reserva
+}
+
+// Predicado para verificar se uma atividade extra conflita com alguma aula em termos de horário
+pred atividadeConflitanteComAula[ae: AtividadeExtra] {
+    some a: Aula | 
+        (a.dias & ae.dias) != none and 
+        (a.horarios & ae.horarios) != none
+}
+
+// Restrição que coloca atividades extras na lista de espera se houver conflito de horários com aulas
+fact AtividadeExtraEmListaDeEspera {
+    all ae: AtividadeExtra |
+        atividadeConflitanteComAula[ae] implies 
+        some le: ListaEspera | ae in le.reservas.atividades
+}
+
 
 //Predicado para garantir que pessoa é um professor
 pred ehProfessor[p: Pessoa]{
@@ -164,4 +198,4 @@ assert HorariosValidosDisciplina {
         d.horarios in Horario
 }
 
-run {} for exactly 2 Lab, 5 Aula, 3 Pessoa, 5 Dia, 3 Disciplina
+run {} for exactly 2 Lab, 3 Pessoa, 5 Dia, 3 Disciplina, 3 Atividade, 2 Reserva, 1 ListaEspera
